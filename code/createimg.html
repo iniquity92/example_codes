@@ -1,0 +1,50 @@
+<html>
+    <head><title>Creating an image using javascript</title>
+        <script src="static/js/jquery.js" type="text/javascript"></script>
+        <script src="static/jui/jquery-ui.js" type="text/javascript"></script>
+        <script src="static/js/edit.js" type="text/javascript"></script>
+
+        <link rel="stylesheet" href="static/jui/jquery-ui.css" type="text/css">
+        <link rel="stylesheet" href="static/css/edit.css" type="text/css">
+        <style>
+           
+         
+        </style>
+    </head>
+    <body>
+        <img src="static/img/spartan.png" id="spartan" height="300" width="175">
+        <button id="create">Copy image</button>
+        <hr>
+        <div id="result">
+            <!--div id="resizeable" class="ut"></div-->    
+        </div><br />
+        <div id="Hslider"></div>
+        <div id="Wslider"></div>
+        <form id="dimensions">
+            <label for="height">H:</label>
+            <input type="text" id="height" name="height" value="">
+            <br />
+            <label for="width">W:</label>
+            <input type="text" id="width" name="width" value="">
+            <input type="submit" id="resize" name="resize" value="resize"> 
+        </form>
+        <script>
+            $("#create").click(function(){
+              var src = $("#spartan").attr("src");
+              var newImg = new Image();
+                    //newImg.onload = function(){
+                        //var height = newImg.height;
+                        //var width = newImg.width;
+                         //$(document).append(newImg);
+                    //}
+              newImg.src = src;
+              newImg.alt = "Spartan copy";
+              newImg.height = "250";
+              newImg.width = "175";
+              newImg.id = "spartancopy"
+              $("#result").html(newImg);
+              $("#result").trigger("newImage");            
+            });
+        </script>
+    </body>    
+</html>

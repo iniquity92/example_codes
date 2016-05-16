@@ -1,0 +1,115 @@
+<html>
+    <head>
+        <script type="text/javascript" src="static/js/jquery.js"></script>
+        <script type="text/javascript" src="static/jui/jquery-ui.js"></script>
+
+        <link href="static/jui/jquery-ui.css" type="text/css" rel="stylesheet">
+        <style>
+            #resizeable{
+                background-color:lightgray;
+                height:150px;
+                width:150px;
+                border: 1px solid black;
+            }
+            #data{
+                position:absolute;
+                top:50px;
+                right:50px;
+                border:0px solid black;
+
+            }
+            #sliders{
+                position:absolute;
+                top:200px;
+                right:50px;
+                width:300px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="resizeable"></div>
+
+        <div id="sliders">
+            H: <div id="sliderH"></div><br /><br />
+            W: <div id="sliderW"></div>
+        </div>
+
+        <div id="data">
+            <label for="resizeH">H</label><input id="resizeH" type="text"><br /><br />
+            <label for="resizeW">W</label><input id="resizeW" type="text">
+        </div>
+
+        <script>
+            $(function(){
+                $("#resizeable").resizable({
+                    minHeight:150,
+                    maxHeight:600,
+                    minWidth:150,
+                    maxWidth:600,
+                    resize: function(event, ui){
+                       $("#resizeH").val(ui.size.height);
+                        $("#resizeW").val(ui.size.width);
+                        setSlider(ui.size.height,ui.size.width);
+                    }
+                });
+
+                $("#resizeH,#resizeW").on("change",function(event){
+                    var newValue = event.target.value;
+                    var trig = event.target.id;
+                    resizeBox(newValue,trig);
+
+
+                });
+
+                $("#sliderH").slider({
+                    max:600,
+                    min:150,
+                    range:"min",
+                    value:150,
+                    slide: function(event,ui){
+                        $("#resizeH").val(ui.value);
+                        resizeBox(ui.value,"resizeH");
+                    }
+
+                });
+                $("#resizeH").val($("#sliderH").slider("value"));
+
+                $("#sliderW").slider({
+                    max:600,
+                    min:150,
+                    range:"min",
+                    value:150,
+                    slide: function(event,ui){
+                        $("#resizeW").val(ui.value);
+                        resizeBox(ui.value,"resizeW");
+                    }
+
+                });
+                $("#resizeW").val($("#sliderW").slider("value"));
+
+
+                function resizeBox(newValue,trig){
+
+                    if(trig=="resizeH"){
+                        $("#resizeable").css("height",newValue);
+                        setSlider(newValue,$("#sliderW").slider("value"));
+                    }
+                    else{
+                        $("#resizeable").css("width",newValue);
+                        setSlider($("#sliderH").slider("value"),newValue);
+                    }
+
+                }
+
+                function setSlider(height,width){
+                    $("#sliderH").slider("value",height);
+                    $("#sliderW").slider("value",width);
+                }
+
+
+            });
+        </script>
+
+
+    </body>
+</html>

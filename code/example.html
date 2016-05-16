@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <script src="static/js/jquery.js"></script>
+    </head>
+    <body>
+        <input id="data" type="file">
+        <div id="msg"></div>
+        <script>
+            $("#data").on('change',function(e){
+               // alert("xyz");
+               var myfile = this.files[0];
+               var types = /(jpe?g|png|svg|tiff|exif|gif)/i;
+               if(!types.test(myfile.type)){
+                   $("#msg").html(
+                       "<p>Error uploading file, file format not supported</p>"
+                       );
+               }
+               else{
+                    readFile(this.files[0],function(e){ //this e is resulting as the execution of readAsDataURL() function
+                        $("#msg").empty();
+                         $("#msg").html(
+                              "<img height='100' width='60' src='"+e.target.result+"'>"
+                            );
+                    });
+            
+            }
+            });
+            function readFile(file,callback){
+                var reader = new FileReader();
+                reader.onload = callback;
+                reader.readAsDataURL(file); 
+            }
+        </script>
+    </body>
+</html>

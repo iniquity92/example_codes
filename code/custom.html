@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <script type="text/javascript" src="static/js/jquery.js"></script>
+        <title> Custom functions</title>
+    </head>
+
+    <body>'
+        <div id="changeme"></div>
+        <button id="clickme">Change text</button>
+        <script>
+
+            $("#changeme").on("contentchange",function(event){
+                alert("You changed me!");
+            });
+            $("#clickme").click(function(){
+                $("#changeme").html("<p>Changed this, did it trigger something?</p>");
+                $("#changeme").trigger("contentchange");
+            });
+
+        </script>
+    </body>
+</html>
