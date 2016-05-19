@@ -1,0 +1,126 @@
+<html>
+    <head>
+        <title>cropping</title>
+        <script type="text/javascript" src="static/js/jquery.js"></script>
+        <script type="text/javascript" src="static/jui/jquery-ui.js"></script>
+
+
+        <link href="static/jui/jquery-ui.css" rel="stylesheet" type="text/css">
+
+        <style>
+            #imageholder{
+                background-color:red;
+                height:600px;
+                width:450px;
+                position:absolute;
+                top:60px;
+                left:60px;
+            }
+            #overlay{
+                background-color:black;
+                height:600px;
+                width:450px;
+                opacity:0.4;
+            }
+            #cropper{
+                background-color:red;
+                height:150px;
+                width:150px;
+                position:relative;
+                top:0px;
+                left:0px;
+            }
+            #data{
+                position:absolute;
+                top:50px;
+                right:50px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="croparea">
+            <div id="imageholder">
+
+                <div id="overlay">
+
+                    <div id="cropper"></div>
+
+                </div>
+
+            </div>
+
+            <button id="createcrop">Create Crop</button>
+            <button id="cancelcrop">Cancel</button>
+        </div>
+
+
+        <div id="cropped">
+            <div id="cropped_img"></div>
+            <div id="debug"></div>
+            <button id="revert">Back to croping</button>
+            <button id="upload">Upload</button>
+        </div>
+
+
+        <form id="data" method="post" action="crop.php" enctype="multipart/form-data">
+            X:<input type="text" id="X" name="X"><br /><br />
+            Y:<input type="text" id="Y" name="Y"><br /><br />
+            H:<input type="text" id="H" name="H"><br /><br />
+            W:<input type="text" id="W" name="W"><br /><br />
+            <input type="file" id="toCrop" name="toCrop">
+            <input type="submit" id="crop" name="crop" value="crop">
+        </form>
+
+        <script>
+            $(function(){
+                $("#cropper").resizable({
+                    containment:"parent",
+                    resize: function(event,ui){
+                        $("#H").val(ui.size.height);
+                        $("#W").val(ui.size.width);
+                    }
+                });
+
+                $("#cropper").draggable({
+                    containment:"parent",
+                    drag: function(event,ui){
+                        $("#X").val(ui.position.left);
+                        $("#Y").val(ui.position.top);
+                    }
+                });
+
+
+                $("#overlay,#cropper").hide();
+
+                $("#createcrop").click(function(){
+                    $("#overlay,#cropper").show();
+                    $("#H").val($("#cropper").css("height"));
+                    $("#W").val($("#cropper").css("width"));
+                    $("#X").val($("#cropper").css("left"));
+                    $("#Y").val($("#cropper").css("top"));
+
+                });
+
+                $("#cancelcrop").click(function(){
+                    $("#overlay,#cropper").hide();
+                    $("#H").val("");
+                    $("#W").val("");
+                    $("#X").val("");
+                    $("#Y").val("");
+
+                });
+                $("#cropped").hide();
+                $("#revert").click(function(){
+                    $("#cropped").hide();
+                    $("#croparea").show();
+                });
+                $("#toCrop").on("change",function(event){
+                    $("#croparea").show();
+                    $("#cropped").hide();
+                });
+            });
+        </script>
+        <script type="text/javascript" src="static/js/preview.js"></script>
+        <script type="text/javascript" src="static/js/upload.js"></script>
+    </body>
+</html>
