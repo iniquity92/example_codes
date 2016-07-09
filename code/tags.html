@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <script src="static/js/jquery.js"></script>
+        <title>Tags</title>
+    </head>
+    <body>
+        <style>
+            .tag_text{
+                background: rgba(103,200,100,0.75);
+                position: relative;
+                margin-left: 5px;
+                padding-right: 5px;
+                padding-left: 5px;
+            }
+            .times{
+                margin-left: 4px;
+                font-size:large;
+            }
+            .times:hover{
+                background: inherit;
+                cursor: pointer;
+            }
+        </style>
+        <form id="form">
+            <input id="t1" name="t1" type="text" size="40" placeholder="enter a word and hit space to make a tag">
+            <input type="submit" id="submit" value="submit">
+        </form>
+        <hr />
+        <div id="result"></div>
+        <div id="list"></div>
+        <script>
+            $(function(){
+                $("#t1").keydown(function(e){
+                    if(e.which==32){
+                        var tag_offset = {top:0,left:0};
+                        var tag_val = e.target.value;
+                        var tag = "<strong class='tag_text'>"+tag_val+
+                        "<span class='times close'>&times;</span></strong>";
+
+                         $("#result").append(tag);
+                        
+                        $("#t1").val("");
+                    }
+                });
+            
+                $("#result").on("click",".close",function(){
+                    $(this).parent().remove();
+                    $(this).remove();
+                });
+
+                $("#form").on("submit",function(e){
+                    e.preventDefault();
+                    var obj = $("#result").toArray();
+                    var pattern = /\w+/ig;
+                    var list = obj[0].textContent.match(pattern);
+                    /*var ul = "<ul>";
+                    for(x in list){
+                        ul += "<li>"+list[x]+"</li>"
+                    }
+                    ul += "</ul>";
+                    $("#list").html(ul);*/
+                    $.ajax({
+                        url:"tags.php",
+                        data : {t1:list},
+                        success:function(data){
+                            var arr = JSON.parse(data);
+                            var tags;
+                            for(x in arr){
+                                tags += "<strong class='tag_text'><a href=''>"+arr[x]+"</a></strong>";
+                            }
+                            $("#list").empty();
+                            $("#list").html(tags);
+                        }
+                    });
+
+                });
+
+                
+            });    
+        </script>    
+    </body>
+
+</html>
