@@ -50,7 +50,7 @@
 
                 $("#form").on("submit",function(e){
                     e.preventDefault();
-                    var obj = $("#result").toArray();
+                    var obj = $("#result").toArray(); //gets the new or existing tags created by the user
                     var pattern = /\w+/ig;
                     var list = obj[0].textContent.match(pattern);
                     /*var ul = "<ul>";
